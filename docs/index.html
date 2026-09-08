@@ -12,122 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --ink:#0E1420;
-  --ink-raised:#161E2E;
-  --rule:#26314A;
-  --paper:#E8E6E1;
-  --muted:#8792A8;
-  --brass:#C9A227;
-  --brass-lift:#E3BC42;
-  --rust:#DD7A61;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:"Public Sans",system-ui,-apple-system,Segoe UI,sans-serif;
-  --gutter:clamp(1.25rem,5vw,4rem);
-  --measure:64rem;
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--ink);color:var(--paper);
-  font-family:var(--sans);font-size:clamp(1rem,.95rem + .2vw,1.0625rem);
-  line-height:1.6;-webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:var(--measure);margin-inline:auto;padding-inline:var(--gutter)}
-a{color:var(--brass-lift);text-decoration-thickness:1px;text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--brass-lift);outline-offset:3px;border-radius:2px}
-
-/* ── masthead ─────────────────────────────────────────── */
-.masthead{border-bottom:1px solid var(--rule)}
-.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.15rem}
-.wordmark{font-family:var(--mono);font-weight:600;letter-spacing:-.02em;font-size:1rem;color:var(--paper);text-decoration:none}
-.wordmark span{color:var(--brass)}
-.masthead nav{display:flex;gap:1.5rem;font-size:.875rem}
-.masthead nav a{color:var(--muted);text-decoration:none}
-.masthead nav a:hover{color:var(--paper)}
-
-/* ── hero: the armored block ──────────────────────────── */
-.hero .wrap{padding-block:clamp(3rem,9vw,6.5rem)}
-.armor{
-  display:flex;align-items:center;gap:.9rem;
-  font-family:var(--mono);font-size:clamp(.66rem,2.1vw,.83rem);
-  color:var(--brass);opacity:.62;letter-spacing:.02em;white-space:nowrap;
-}
-/* The rule turns the armor header into the boundary it actually is, rather than a floating label. */
-.armor::after{content:"";flex:1 1 auto;height:1px;background:currentColor;opacity:.4;min-width:1rem}
-.armor-top{margin-bottom:clamp(1.5rem,4vw,2.5rem)}
-.armor-bottom{margin-top:clamp(1.75rem,4vw,2.75rem)}
-h1{
-  font-family:var(--mono);font-weight:600;
-  /* The lower bound is set so the longest line still fits a 320px screen in a 0.6em mono. */
-  font-size:clamp(1.6rem,.55rem + 4.6vw,4.15rem);
-  line-height:1.06;letter-spacing:-.035em;margin:0;
-  color:var(--paper);
-}
-h1 .resolve{display:block}
-h1 .cipher{color:var(--brass);opacity:.5}
-.standfirst{max-width:34rem;margin:clamp(1.25rem,3vw,1.75rem) 0 0;color:var(--muted);font-size:clamp(1rem,.95rem + .35vw,1.2rem)}
-.standfirst strong{color:var(--paper);font-weight:500}
-.standfirst-tight{margin-bottom:2rem}
-
-.actions{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:clamp(1.75rem,4vw,2.5rem)}
-.btn{
-  display:inline-flex;align-items:center;gap:.6rem;
-  font-family:var(--mono);font-size:.9rem;font-weight:500;
-  padding:.8rem 1.35rem;border-radius:3px;text-decoration:none;
-  border:1px solid transparent;transition:background .15s ease,border-color .15s ease,color .15s ease;
-}
-.btn-primary{background:var(--brass);color:#14100A;border-color:var(--brass)}
-.btn-primary:hover{background:var(--brass-lift);border-color:var(--brass-lift)}
-.btn-ghost{color:var(--paper);border-color:var(--rule)}
-.btn-ghost:hover{border-color:var(--muted)}
-
-/* ── warning ──────────────────────────────────────────── */
-.warning{border-block:1px solid var(--rule);background:var(--ink-raised)}
-.warning .wrap{padding-block:1.5rem;display:flex;gap:1rem;align-items:flex-start}
-.warning-mark{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--rust);letter-spacing:.08em;white-space:nowrap;padding-top:.15rem}
-.warning p{margin:0;color:var(--muted);font-size:.95rem;max-width:52rem}
-.warning strong{color:var(--paper);font-weight:500}
-
-/* ── sections ─────────────────────────────────────────── */
-.band .wrap{padding-block:clamp(3rem,7vw,5rem)}
-.band + .band{border-top:1px solid var(--rule)}
-.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 1.75rem}
-h2{font-family:var(--mono);font-weight:600;font-size:clamp(1.35rem,1rem + 1.4vw,1.9rem);letter-spacing:-.02em;margin:0 0 .6rem;line-height:1.2}
-
-.features{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
-.feature{background:var(--ink);padding:1.6rem 1.5rem}
-.feature h3{font-family:var(--mono);font-size:.95rem;font-weight:600;margin:0 0 .5rem;color:var(--paper);letter-spacing:-.01em}
-.feature p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.55}
-
-/* join steps — numbered because they are an actual sequence */
-.steps{list-style:none;counter-reset:step;margin:0;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
-.step{background:var(--ink);counter-increment:step;padding:1.5rem;display:grid;grid-template-columns:3.25rem 1fr;gap:1rem;align-items:start}
-.step::before{content:counter(step,decimal-leading-zero);font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--brass);opacity:.85;padding-top:.1rem}
-.step h3{margin:0 0 .35rem;font-size:1rem;font-weight:600;font-family:var(--sans)}
-/* The opt-in URLs are long and unbreakable; without this they force the page wider than a phone. */
-.step p{margin:0;color:var(--muted);font-size:.92rem;overflow-wrap:anywhere}
-.step code{font-family:var(--mono);font-size:.85em;color:var(--paper);background:var(--ink-raised);padding:.15em .45em;border-radius:3px;border:1px solid var(--rule)}
-
-/* ── footer ───────────────────────────────────────────── */
-footer{border-top:1px solid var(--rule);background:var(--ink-raised)}
-footer .wrap{padding-block:2.25rem;display:flex;flex-wrap:wrap;gap:1rem 2.5rem;justify-content:space-between;align-items:center}
-footer p{margin:0;color:var(--muted);font-size:.86rem}
-footer nav{display:flex;gap:1.5rem;font-size:.86rem}
-footer nav a{color:var(--muted);text-decoration:none}
-footer nav a:hover{color:var(--paper)}
-
-@media (max-width:34rem){
-  .warning .wrap{flex-direction:column;gap:.6rem}
-  .actions .btn{flex:1 1 100%;justify-content:center}
-  /* Stack the step number above its text rather than squeezing the column. */
-  .step{grid-template-columns:1fr;gap:.4rem}
-}
-@media (prefers-reduced-motion:reduce){
-  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -249,7 +134,7 @@ footer nav a:hover{color:var(--paper)}
       <a href="https://github.com/nGoline/EasyPGP">GitHub</a>
       <a href="https://github.com/nGoline/EasyPGP/issues">Issues</a>
       <a href="https://github.com/nGoline/EasyPGP/blob/main/CONTRIBUTING.md">Contribute</a>
-      <a href="https://github.com/nGoline/EasyPGP/blob/main/PRIVACY.md">Privacy</a>
+      <a href="privacy/">Privacy</a>
     </nav>
   </div>
 </footer>

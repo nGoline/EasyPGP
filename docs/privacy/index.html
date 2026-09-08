@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Easy PGP</title>
+<meta name="description" content="What Easy PGP does with your data. It collects nothing and holds no INTERNET permission.">
+<meta property="og:title" content="Easy PGP — Privacy Policy">
+<meta property="og:description" content="Easy PGP collects nothing and cannot send data anywhere: it holds no INTERNET permission.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🔐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="../">easy<span>_</span>pgp</a>
+    <nav>
+      <a href="https://github.com/nGoline/EasyPGP">Source</a>
+      <a href="https://github.com/nGoline/EasyPGP/blob/main/LICENSE">GPLv3</a>
+    </nav>
+  </div>
+</header>
+
+<main class="band">
+  <div class="wrap prose">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated 8 September 2026</p>
+
+    <p>
+      Easy PGP is free software published by Níckolas Goline. This describes what the app does
+      with your data. It is a factual account of how the app behaves, and can be checked against
+      the <a href="https://github.com/nGoline/EasyPGP">source code</a>.
+    </p>
+
+    <div class="headline-claim">
+      <p>
+        Easy PGP collects nothing, sends nothing, and has no servers. The app does not request the
+        <code>INTERNET</code> permission, so it cannot transmit your data anywhere even if it tried.
+      </p>
+    </div>
+
+    <h2>What the app stores, and where</h2>
+    <p>All of this lives in the app's private storage, readable only by Easy PGP:</p>
+    <ul>
+      <li>
+        <strong>Your key rings.</strong> Public and private PGP keys you generate or import.
+        Private key rings are encrypted with a passphrase you choose, and additionally sealed with
+        a key held in the Android Keystore that requires your fingerprint or device PIN.
+      </li>
+      <li>
+        <strong>Your settings.</strong> Privacy mode, how long a passphrase is remembered, whether
+        to clear fields after an operation, whether to obfuscate PGP markers.
+      </li>
+    </ul>
+    <p>
+      <strong>Your passphrase is never written to disk.</strong> It is held in memory for the
+      duration you choose — until the screen turns off, one hour, or one day — then overwritten,
+      and it is gone when the app process ends. It cannot be recovered: if you forget it, messages
+      encrypted to that key cannot be decrypted by anyone, including us.
+    </p>
+
+    <h2>Notification access</h2>
+    <p>
+      If you enable it, Easy PGP uses Android's notification listener to spot encrypted messages in
+      notifications from other apps, so it can offer to decrypt them. This is the app's most
+      sensitive permission, so to be precise about it:
+    </p>
+    <ul>
+      <li>Notification text is read <strong>on your device only</strong>, to check whether it begins with a PGP message marker.</li>
+      <li>Notifications that are not encrypted messages are ignored, and nothing about them is stored.</li>
+      <li>When an encrypted message is found, its text is passed to the app's own decrypt screen. It is not written to disk, logged, or transmitted.</li>
+      <li>The feature is optional. Android requires you to grant it explicitly in system settings, and you can revoke it at any time. The rest of the app works without it.</li>
+    </ul>
+
+    <h2>What the app does not do</h2>
+    <ul>
+      <li>No analytics, telemetry, crash reporting, or advertising.</li>
+      <li>No accounts, sign-in, or user identifiers.</li>
+      <li>No network requests of any kind. The app holds no <code>INTERNET</code> permission.</li>
+      <li>Your keys are never uploaded, backed up to a server, or shared.</li>
+    </ul>
+
+    <h2>Hardware keys</h2>
+    <p>
+      If you use a YubiKey, the app talks to it directly over USB or NFC. That communication stays
+      between your phone and the key.
+    </p>
+
+    <h2>Permissions, and why each exists</h2>
+    <table>
+      <tr><th>Permission</th><th>Why</th></tr>
+      <tr><td><code>POST_NOTIFICATIONS</code></td><td>To tell you an encrypted message was detected</td></tr>
+      <tr><td><code>RECEIVE_BOOT_COMPLETED</code></td><td>To restart the detection service after a reboot</td></tr>
+      <tr><td><code>HIDE_OVERLAY_WINDOWS</code></td><td>Privacy mode: stop other apps drawing over the app</td></tr>
+      <tr><td><code>NFC</code></td><td>Talking to a YubiKey over NFC</td></tr>
+      <tr><td><code>USE_BIOMETRIC</code></td><td>Unlocking your private keys with fingerprint or device PIN</td></tr>
+    </table>
+
+    <h2>Google Play</h2>
+    <p>
+      Distribution through Google Play means Google collects its own data about installs and, if
+      you have opted in on your device, crash reports. That collection is Google's, governed by the
+      <a href="https://policies.google.com/privacy">Google Privacy Policy</a>, and is outside this
+      app's control. Easy PGP itself sends nothing to Google.
+    </p>
+
+    <h2>Children</h2>
+    <p>Easy PGP is not directed at children and collects no data from anyone.</p>
+
+    <h2>Changes</h2>
+    <p>
+      Changes to this policy are published here, and its history is public in the
+      <a href="https://github.com/nGoline/EasyPGP/commits/main/PRIVACY.md">repository</a>.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about this policy, or about how the app handles data, can be raised as an
+      <a href="https://github.com/nGoline/EasyPGP/issues">issue</a>. Please report security
+      vulnerabilities privately instead — see
+      <a href="https://github.com/nGoline/EasyPGP/blob/main/CONTRIBUTING.md#security-issues">CONTRIBUTING</a>.
+    </p>
+
+    <h2>A note on trust</h2>
+    <p>
+      Easy PGP is <strong>alpha software and has not been security audited</strong>. This policy
+      describes what the app is designed to do, and the source is public so the claims can be
+      checked rather than taken on trust. It is not a warranty that the software is free of
+      defects. Do not rely on it to protect information whose disclosure would put you at risk.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Free software under the GNU GPLv3. No warranty.</p>
+    <nav>
+      <a href="../">Home</a>
+      <a href="https://github.com/nGoline/EasyPGP">GitHub</a>
+      <a href="https://github.com/nGoline/EasyPGP/issues">Issues</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
