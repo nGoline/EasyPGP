@@ -1,20 +1,20 @@
-# Privacy Policy for Easy GPG
+# Privacy Policy for Easy PGP
 
 **Last updated:** 3 September 2026
 
-Easy GPG is free software published by Níckolas Goline. This document describes what the app
+Easy PGP is free software published by Níckolas Goline. This document describes what the app
 does with your data. It is a factual description of the app's behaviour, and can be checked
-against the [source code](https://github.com/nGoline/EasyGPG).
+against the [source code](https://github.com/nGoline/EasyPGP).
 
 ## The short version
 
-Easy GPG collects nothing, sends nothing, and has no servers. **The app does not request the
+Easy PGP collects nothing, sends nothing, and has no servers. **The app does not request the
 `INTERNET` permission**, so it cannot transmit your data anywhere even if it tried. Everything
 it holds stays on your device.
 
 ## What the app stores, and where
 
-Everything below lives in the app's private storage, readable only by Easy GPG:
+Everything below lives in the app's private storage, readable only by Easy PGP:
 
 - **Your key rings.** Public and private PGP keys you generate or import. Private key rings are
   encrypted with a passphrase you choose, and additionally sealed with a key held in the Android
@@ -29,7 +29,7 @@ decrypted by anyone, including us.
 
 ## Notification access
 
-If you enable it, Easy GPG uses Android's notification listener to detect encrypted messages in
+If you enable it, Easy PGP uses Android's notification listener to detect encrypted messages in
 notifications from other apps, so it can offer to decrypt them.
 
 This is the app's most sensitive permission, so to be precise about it:
@@ -69,11 +69,11 @@ stays between your phone and the key.
 Distribution through Google Play means Google collects its own data about installs and, if you
 have opted in on your device, crash reports. That collection is Google's, governed by the
 [Google Privacy Policy](https://policies.google.com/privacy), and is outside this app's control.
-Easy GPG itself sends nothing to Google.
+Easy PGP itself sends nothing to Google.
 
 ## Children
 
-Easy GPG is not directed at children and collects no data from anyone.
+Easy PGP is not directed at children and collects no data from anyone.
 
 ## Changes
 
@@ -83,13 +83,13 @@ repository.
 ## Contact
 
 Questions about this policy, or about the app's handling of data, can be raised as an issue at
-[github.com/nGoline/EasyGPG/issues](https://github.com/nGoline/EasyGPG/issues). Please report
+[github.com/nGoline/EasyPGP/issues](https://github.com/nGoline/EasyPGP/issues). Please report
 security vulnerabilities privately instead — see
-[CONTRIBUTING.md](https://github.com/nGoline/EasyGPG/blob/main/CONTRIBUTING.md#security-issues).
+[CONTRIBUTING.md](https://github.com/nGoline/EasyPGP/blob/main/CONTRIBUTING.md#security-issues).
 
 ## A note on trust
 
-Easy GPG is **alpha software and has not been security audited**. This policy describes what the
+Easy PGP is **alpha software and has not been security audited**. This policy describes what the
 app is designed to do, and the source is public so the claims can be verified. It is not a
 warranty that the software is free of defects. Do not rely on it to protect information whose
 disclosure would put you at risk.

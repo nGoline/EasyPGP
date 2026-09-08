@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Easy GPG</string>
+    <string name="app_name">Easy PGP</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Easy GPG</string>
+    <string name="nav_header_title">Easy PGP</string>
     <string name="nav_header_subtitle">PGP without the command line</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -19,7 +19,7 @@
     <string name="decrypt">Decrypt</string>
     <string name="waiting_for_encrypted_message">Waiting for encrypted message…</string>
     <string name="decryption_failed">Decryption failed: %1$s</string>
-    <string name="welcome_to_easygpg">Welcome to EasyGPG</string>
+    <string name="welcome_to_easygpg">Welcome to Easy PGP</string>
     <string name="home_no_keys_found">You don\'t have any keys yet.\nGo to options to create or import your keys.</string>
     <string name="key_fingerprint">%1$s</string>
     <string name="public_key_appears_here">Public Key Appears Here</string>

@@ -1,6 +1,6 @@
-# Contributing to Easy GPG
+# Contributing to Easy PGP
 
-Thanks for helping keep Easy GPG alive! This project welcomes issues, ideas, and
+Thanks for helping keep Easy PGP alive! This project welcomes issues, ideas, and
 pull requests.
 
 ## Getting started

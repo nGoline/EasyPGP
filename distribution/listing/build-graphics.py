@@ -22,7 +22,7 @@ SRC = BASE / "source"
 PAPER = (232, 230, 225)
 BRASS = (201, 162, 39)
 
-TITLE = "Easy GPG"
+TITLE = "Easy PGP"
 TAGLINE = "PGP without the command line"
 
 # Menlo is a system font on macOS; Andale Mono is the fallback. Both are monospaced, which

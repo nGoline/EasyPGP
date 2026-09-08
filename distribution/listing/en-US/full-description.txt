@@ -1,13 +1,13 @@
-Easy GPG makes PGP encryption approachable on Android. Encrypt a message to someone's public key, decrypt what they send back, manage your key rings, and use a hardware YubiKey — without touching a command line.
+Easy PGP makes PGP encryption approachable on Android. Encrypt a message to someone's public key, decrypt what they send back, manage your key rings, and use a hardware YubiKey — without touching a command line.
 
 ⚠️ ALPHA SOFTWARE — NOT AUDITED
-Easy GPG is under active development and has not been security audited. Do not rely on it to protect information whose disclosure would put you at risk.
+Easy PGP is under active development and has not been security audited. Do not rely on it to protect information whose disclosure would put you at risk.
 
 ━━━━━━━━━━━━━━━━━━━━
 
 NOTHING LEAVES YOUR DEVICE
 
-Easy GPG does not hold the INTERNET permission. It cannot send your keys, your messages, or anything else anywhere — that is enforced by Android, not merely promised. There are no servers, no accounts, no analytics, and no advertising.
+Easy PGP does not hold the INTERNET permission. It cannot send your keys, your messages, or anything else anywhere — that is enforced by Android, not merely promised. There are no servers, no accounts, no analytics, and no advertising.
 
 WHAT IT DOES
 
@@ -35,7 +35,7 @@ PRIVACY MODE
 
 DETECTING ENCRYPTED MESSAGES
 
-Optionally, Easy GPG can watch notifications for incoming PGP messages and offer to decrypt them. Notification text is examined on your device only, nothing about other notifications is stored, and the permission is granted in Android settings and revocable at any time. The app works fully without it.
+Optionally, Easy PGP can watch notifications for incoming PGP messages and offer to decrypt them. Notification text is examined on your device only, nothing about other notifications is stored, and the permission is granted in Android settings and revocable at any time. The app works fully without it.
 
 ━━━━━━━━━━━━━━━━━━━━
 
@@ -47,9 +47,9 @@ THINGS TO UNDERSTAND BEFORE YOU START
 
 OPEN SOURCE
 
-Easy GPG is free software under the GNU GPLv3. The source is public, so every claim above can be checked rather than taken on trust.
+Easy PGP is free software under the GNU GPLv3. The source is public, so every claim above can be checked rather than taken on trust.
 
-github.com/nGoline/EasyGPG
+github.com/nGoline/EasyPGP
 
 Built on Bouncy Castle for OpenPGP and Yubico's YubiKit for hardware keys.
 

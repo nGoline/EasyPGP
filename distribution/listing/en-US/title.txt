@@ -1,1 +1,1 @@
-Easy GPG: PGP Encryption
+Easy PGP: Message Encryption

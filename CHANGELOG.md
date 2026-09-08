@@ -1,9 +1,9 @@
 # Changelog
 
-Notable changes to Easy GPG. Versions correspond to `versionName` in
+Notable changes to Easy PGP. Versions correspond to `versionName` in
 `app/build.gradle.kts`; the `versionCode` Play uses is noted alongside.
 
-Easy GPG is **alpha, unaudited software**. See the
+Easy PGP is **alpha, unaudited software**. See the
 [security notes](README.md#security) before trusting it with anything that matters.
 
 ## 0.5 — 2026-09-08 (versionCode 7)
