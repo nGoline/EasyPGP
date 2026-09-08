@@ -38,9 +38,8 @@ Tablet, Chromebook and Android XR screenshots are optional.
 Five, in `en-US/graphics/screenshots/phone/`, ordered to read as a sequence: encrypt, share the
 ciphertext anywhere, import someone's public key, protect the private key, privacy settings.
 
-**These are provisional.** They were taken before the Android Studio template leftovers were
-removed, so the app is still Material purple while the icon and feature graphic are indigo and
-brass. Retake them after that cleanup.
+Taken from 0.5, after the template leftovers were removed, so they show the app's own indigo
+and brass rather than the Android Studio default.
 
 Two rules that are easy to get wrong:
 
@@ -51,9 +50,16 @@ Two rules that are easy to get wrong:
 - Screenshots must be **24-bit PNG with no alpha**. `adb exec-out screencap -p` produces RGBA,
   which has to be converted.
 
-When capturing: privacy mode blocks screenshots, so leave it off. Use a throwaway key — a
-fingerprint in a store screenshot is public permanently. And set the emulator to a sane size
-first, since Android Studio's capture grabs the whole framebuffer and letterboxes the app:
+When capturing, three things bite:
+
+- Privacy mode blocks screenshots, so leave it off.
+- Use a throwaway key. A fingerprint in a store screenshot is public permanently.
+- `adb shell input text` repeats itself several times per call while the soft keyboard is up, and
+  a dialog's buttons end up underneath the keyboard where taps do not reach. `adb exec-out
+  screencap` respects the size override and produces no letterboxing, unlike Android Studio's own
+  capture button, which grabs the whole framebuffer.
+
+Set the emulator to a size Play accepts before capturing:
 
 ```sh
 adb shell wm size 1080x1920 && adb shell wm density 420
