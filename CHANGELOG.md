@@ -6,6 +6,22 @@ Notable changes to Easy PGP. Versions correspond to `versionName` in
 Easy PGP is **alpha, unaudited software**. See the
 [security notes](README.md#security) before trusting it with anything that matters.
 
+## 0.6 — 2026-09-08 (versionCode 8)
+
+### Renamed to Easy PGP
+
+The app was called Easy GPG. GPG is GnuPG, a specific implementation; this app implements
+OpenPGP using Bouncy Castle and contains no GnuPG at all, so the old name pointed at software
+that is not in it. Nothing about how the app works has changed, and your keys are untouched.
+
+### Fixed
+
+- An obfuscated message began and ended with the marker repeated. Blank lines were being
+  replaced with the marker alongside the armor header and footer, and armored output carries
+  one after the version header and another at the end. A doubled marker is a more distinctive
+  pattern than a single one, so this worked against the point of obfuscating. Messages sent by
+  earlier versions still decrypt.
+
 ## 0.5 — 2026-09-08 (versionCode 7)
 
 ### Notifications

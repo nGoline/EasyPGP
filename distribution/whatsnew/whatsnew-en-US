@@ -1,11 +1,9 @@
-Notifications
+Easy GPG is now Easy PGP
 
-• Several encrypted messages now raise one notification each, instead of overwriting each other
-• Tapping a notification no longer loses the message if you cancel or mistype your authentication — it clears only once the message is open
-• The detected-message notification showed a camera icon; it is now a key
+The app implements OpenPGP, not GnuPG, so the old name pointed at software it does not contain. Nothing about how it works has changed and your keys are untouched.
 
-Appearance
+Fixed
 
-• A new look, and a new launcher icon, replacing the leftover Android Studio defaults
+• Obfuscated messages carried the marker twice at each end. A repeated marker is easier to spot than a single one, which worked against the point of hiding it. Messages sent by earlier versions still decrypt.
 
 Alpha software. Not audited.
