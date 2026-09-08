@@ -770,17 +770,29 @@ class PGPKeyManager(private val context: Context) {
         return prefs.getBoolean(context.getString(R.string.obfuscate_pgp_markers), false)
     }
 
-    private fun obfuscateMarkers(input: String): String {
-        // Replace all PGP marker lines and version/comment lines with 00023CD1
-        return input.lines().joinToString("") { line ->
-            if (line.startsWith("-----BEGIN ") ||
-                line.startsWith("-----END ") ||
-                line.isBlank()) PGPConstants.OBFUSCATED_MARKER
-            else if (line.startsWith("Version:") ||
-                line.startsWith("Comment:")) ""
-            else line
+    /**
+     * Replaces the armor header and footer with [PGPConstants.OBFUSCATED_MARKER].
+     *
+     * Blank lines are dropped rather than replaced. Armored output carries one after the version
+     * header and another at the end, so replacing them emitted the marker twice at each end — and
+     * a doubled sixteen-character hex run is a more distinctive signature than a single one, which
+     * works against the point of obfuscating at all.
+     *
+     * Internal rather than private so the round trip can be tested directly.
+     */
+    @VisibleForTesting
+    internal fun obfuscateMarkers(input: String): String =
+        input.lines().joinToString("") { line ->
+            when {
+                line.startsWith("-----BEGIN ") || line.startsWith("-----END ") ->
+                    PGPConstants.OBFUSCATED_MARKER
+                // Version and Comment identify the implementation; blank lines carry nothing.
+                // Deobfuscation re-chunks the base64 regardless, so neither is needed.
+                line.isBlank() -> ""
+                line.startsWith("Version:") || line.startsWith("Comment:") -> ""
+                else -> line
+            }
         }
-    }
 
     /** Internal rather than private only so the obfuscation round trip can be tested directly. */
     @VisibleForTesting
