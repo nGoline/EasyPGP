@@ -1,9 +1,11 @@
-A security-focused release.
+Notifications
 
-• Private keys are protected by a passphrase you choose, and sealed behind your fingerprint or device PIN
-• Choose how long a passphrase is remembered: until the screen turns off, an hour, or a day
-• Privacy mode keeps the app out of screenshots and recents, blocks overlays, and stops the keyboard learning what you type
-• Export a private key after authenticating
-• Delete your own keys, with confirmation
+• Several encrypted messages now raise one notification each, instead of overwriting each other
+• Tapping a notification no longer loses the message if you cancel or mistype your authentication — it clears only once the message is open
+• The detected-message notification showed a camera icon; it is now a key
+
+Appearance
+
+• A new look, and a new launcher icon, replacing the leftover Android Studio defaults
 
 Alpha software. Not audited.

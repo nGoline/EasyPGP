@@ -6,6 +6,27 @@ Notable changes to Easy GPG. Versions correspond to `versionName` in
 Easy GPG is **alpha, unaudited software**. See the
 [security notes](README.md#security) before trusting it with anything that matters.
 
+## 0.5 — 2026-09-08 (versionCode 7)
+
+### Notifications
+
+- Several encrypted messages arriving together now raise one notification each. Previously every
+  detection overwrote the same notification, so only the most recent one could be reached.
+- Tapping a notification no longer dismisses it immediately. It is cleared once the message is
+  actually on screen, so a cancelled or mistyped authentication no longer loses the message —
+  the notification is still there to tap again.
+- The notification announcing a detected message showed a camera icon. It is now a key.
+
+### Appearance
+
+- The app now uses its own palette rather than the Android Studio default, so it matches its
+  icon and store listing. Contrast was measured for both light and dark.
+- New launcher icon: a brass key on indigo, replacing the Android robot placeholder. Includes a
+  monochrome layer for themed icons.
+- The navigation drawer showed a placeholder name and email address, and the menu used camera
+  and gallery icons for Encrypt, Decrypt and Keys. Both fixed.
+- The button on the home screen did nothing. It now opens the Encrypt screen.
+
 ## 0.4 — 2026-09-03 (versionCode 6)
 
 The first release published through CI, and a long one: 0.3 shipped in July 2025.
