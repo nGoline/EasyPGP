@@ -23,6 +23,14 @@
     <!-- Sits on brass at 7.83:1. White on brass fails, so labels on brass use this. -->
     <color name="ink_on_brass">#FF14100A</color>
 
+    <!--
+      The drawer's selected item. Material tints it with colorPrimary, which is indigo here, so
+      in dark mode the selected row was indigo text on a dark surface at 1.23:1 — invisible.
+      Brass is the accent that reads on both surfaces; the night variant lifts it.
+    -->
+    <color name="nav_item_selected">@color/brass_deep</color>
+    <color name="nav_item_pill_selected">#1FC9A227</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
