@@ -4,7 +4,7 @@ An Android app that makes PGP/GPG encryption approachable. Encrypt and decrypt
 messages, manage your keys, and use a hardware YubiKey — without touching a
 command line.
 
-**[ngoline.github.io/EasyGPG →](https://ngoline.github.io/EasyGPG/)** — what the app does, and
+**[easygpg.ngoline.com →](https://easygpg.ngoline.com)** — what the app does, and
 how to join the closed beta.
 
 > ⚠️ **Alpha software.** Easy GPG is under active development and has not been
