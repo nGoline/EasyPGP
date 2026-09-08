@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- On the dark drawer surface the deep brass is too dim; the lifted one carries. -->
+    <color name="nav_item_selected">@color/brass_lift</color>
+    <color name="nav_item_pill_selected">#2EE3BC42</color>
+</resources>
