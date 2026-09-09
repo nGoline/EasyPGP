@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import com.ngoline.easygpg.data.KeyItem
-import com.ngoline.easygpg.data.shortFingerprint
+import com.ngoline.easygpg.data.encryptionKey
+import com.ngoline.easygpg.data.label
 import com.ngoline.easygpg.PGPKeyManager
 import com.ngoline.easygpg.R
 import com.ngoline.easygpg.copyToCharArray
@@ -33,7 +33,6 @@ import org.bouncycastle.openpgp.PGPLiteralDataGenerator
 import org.bouncycastle.openpgp.PGPPublicKey
 import org.bouncycastle.openpgp.operator.jcajce.JcePGPDataEncryptorBuilder
 import org.bouncycastle.openpgp.operator.jcajce.JcePublicKeyKeyEncryptionMethodGenerator
-import org.bouncycastle.util.encoders.Hex
 import java.io.ByteArrayOutputStream
 import java.security.SecureRandom
 import java.util.Date
@@ -107,25 +106,16 @@ class EncryptFragment : Fragment() {
     }
 
     private fun loadPublicKeys() {
-        val keyItems: MutableList<KeyItem> = keyManager.getAllPublicKeys()
+        // One entry per key ring, named after its primary key. A ring with no encryption-capable
+        // key cannot be encrypted to at all, so it is left out.
+        val (labels, keys) = keyManager.getAllPublicKeys()
+            .mapNotNull { keyItem -> keyItem.encryptionKey?.let { keyItem.label to it } }
+            .unzip()
 
-        // For each keyring, find all encryption-capable keys
-        val aliasesAndKeys: List<Pair<String, PGPPublicKey>> = keyItems.flatMap { keyItem ->
-            val encryptionKeys = keyItem.publicKeyRing.publicKeys?.asSequence()
-                ?.filter { it.isEncryptionKey }
-                ?.toList()
-                ?: listOf(keyItem.publicKey).filter { it.isEncryptionKey }
+        publicKeyList = keys
 
-            encryptionKeys.map { pubKey ->
-                val fingerprint = Hex.toHexString(pubKey.fingerprint)
-                "${keyItem.alias} (${shortFingerprint(fingerprint)})" to pubKey
-            }
-        }
-
-        publicKeyList = aliasesAndKeys.map { it.second }
-
-        // Create an ArrayAdapter for the spinner. Specify the type explicitly for ArrayAdapter.
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, aliasesAndKeys.map { it.first })
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, labels)
         spinnerPublicKeys.adapter = adapter
     }
 

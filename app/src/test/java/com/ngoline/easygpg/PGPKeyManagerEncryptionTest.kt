@@ -3,6 +3,10 @@ package com.ngoline.easygpg
 import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
+import com.ngoline.easygpg.data.KeyItem
+import com.ngoline.easygpg.data.encryptionKey
+import org.bouncycastle.openpgp.PGPSecretKeyRing
+import org.bouncycastle.util.encoders.Hex
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -42,6 +46,26 @@ class PGPKeyManagerEncryptionTest {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putBoolean(context.getString(R.string.obfuscate_pgp_markers), enabled)
             .commit()
+    }
+
+    @Test
+    fun `a message to an RSA ring opens with the encryption subkey alone`() {
+        // The shape that broke: both keys are RSA, so isEncryptionKey answers true for the sign-only
+        // primary too. Encrypting to that primary yields a message the recipient cannot open, since
+        // on the usual offline-primary setup the subkey is the only secret half on the device.
+        val (rsaSecret, rsaPublic) = TestKeyRings.generateRsa(passphrase.copyOf())
+        val keyItem = KeyItem(
+            "Alice", Hex.toHexString(rsaPublic.publicKeys.next().fingerprint),
+            rsaPublic.publicKeys.next(), rsaPublic
+        )
+
+        val armored = manager.encryptMessage("attack at dawn".toCharArray(), keyItem.encryptionKey!!)
+
+        val subkeyOnly = PGPSecretKeyRing.removeSecretKey(rsaSecret, rsaSecret.secretKey)
+        assertEquals(
+            "attack at dawn",
+            TestKeyRings.decrypt(armored, subkeyOnly, passphrase.copyOf()),
+        )
     }
 
     @Test
