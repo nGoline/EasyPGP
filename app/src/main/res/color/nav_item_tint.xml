@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only the checked state is overridden; unchecked keeps the platform's text colour, which is
+     already correct for the surface in both light and dark. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/nav_item_selected" android:state_checked="true" />
+    <item android:color="?android:attr/textColorPrimary" />
+</selector>
