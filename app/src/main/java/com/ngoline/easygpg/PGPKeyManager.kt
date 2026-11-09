@@ -112,6 +112,57 @@ fun installBouncyCastleProvider() {
     Security.insertProviderAt(BouncyCastleProvider(), 1)
 }
 
+/** User ID placed on generated keys; the app does not ask for one. */
+const val DEFAULT_USER_ID = "user@example.com"
+
+/**
+ * Builds a fresh key ring: an Ed25519 signing primary key with a Curve25519 ECDH encryption
+ * subkey, secret keys protected by [encryptor].
+ *
+ * The primary key uses [PublicKeyAlgorithmTags.EDDSA_LEGACY] (algorithm 22), not
+ * [PublicKeyAlgorithmTags.Ed25519] (algorithm 27). Algorithm 27 is the RFC 9580 encoding, which
+ * GnuPG does not implement: it cannot verify the self-signatures, drops the user ID and refuses to
+ * import the key. Algorithm 22 holds the same Ed25519 key material and is what v4 keys use
+ * everywhere.
+ *
+ * Shared with the tests so they exercise exactly the key shape the app generates.
+ */
+internal fun buildKeyRings(
+    userId: String,
+    encryptor: PBESecretKeyEncryptor,
+): Pair<PGPSecretKeyRing, PGPPublicKeyRing> {
+    val edKeyGen = Ed25519KeyPairGenerator()
+    edKeyGen.init(Ed25519KeyGenerationParameters(SecureRandom()))
+    val signingPair = BcPGPKeyPair(
+        BcPGPVersion, PublicKeyAlgorithmTags.EDDSA_LEGACY, edKeyGen.generateKeyPair(), Date()
+    )
+
+    val ecdhGen = org.bouncycastle.crypto.generators.X25519KeyPairGenerator()
+    ecdhGen.init(org.bouncycastle.crypto.params.X25519KeyGenerationParameters(SecureRandom()))
+    val encryptionPair = BcPGPKeyPair(
+        BcPGPVersion, PublicKeyAlgorithmTags.ECDH, ecdhGen.generateKeyPair(), Date()
+    )
+
+    val digestCalculator = BcPGPDigestCalculatorProvider().get(HashAlgorithmTags.SHA1)
+    val signerBuilder =
+        BcPGPContentSignerBuilder(PublicKeyAlgorithmTags.EDDSA_LEGACY, HashAlgorithmTags.SHA256)
+
+    val primary = PGPSecretKey(
+        PGPSignature.DEFAULT_CERTIFICATION,
+        signingPair,
+        userId,
+        digestCalculator,
+        null,
+        null,
+        signerBuilder,
+        encryptor
+    )
+    val subkey = PGPSecretKey(signingPair, encryptionPair, digestCalculator, signerBuilder, encryptor)
+
+    return PGPSecretKeyRing(listOf(primary, subkey)) to
+        PGPPublicKeyRing(listOf(primary.publicKey, subkey.publicKey))
+}
+
 object PGPConstants {
     const val PGP_MARKER = "-----BEGIN PGP MESSAGE-----"
     const val OBFUSCATED_MARKER = "00023CD1"
@@ -166,43 +217,8 @@ class PGPKeyManager(private val context: Context) {
      */
     fun generateAndSaveKeys(alias: String, passphrase: CharArray): Boolean {
         try {
-            // --- Ed25519 for signing (primary key) ---
-            val edKeyGen = Ed25519KeyPairGenerator()
-            edKeyGen.init(Ed25519KeyGenerationParameters(SecureRandom()))
-            val edKeyPair = edKeyGen.generateKeyPair()
-
-            val digestCalculator = BcPGPDigestCalculatorProvider().get(HashAlgorithmTags.SHA1)
-            val encryptorBuilder = secretKeyEncryptor(passphrase)
-            val signerBuilder = BcPGPContentSignerBuilder(PublicKeyAlgorithmTags.Ed25519, HashAlgorithmTags.SHA256)
-            val bcEdKeyPair = BcPGPKeyPair(BcPGPVersion, PublicKeyAlgorithmTags.Ed25519, edKeyPair, Date())
-
-            // --- Curve25519 for encryption (subkey) ---
-            val ecdhGen = org.bouncycastle.crypto.generators.X25519KeyPairGenerator()
-            ecdhGen.init(org.bouncycastle.crypto.params.X25519KeyGenerationParameters(SecureRandom()))
-            val ecdhKeyPair = ecdhGen.generateKeyPair()
-            val bcEcdhKeyPair = BcPGPKeyPair(BcPGPVersion, PublicKeyAlgorithmTags.ECDH, ecdhKeyPair, Date())
-
-            // --- Create secret key ring with subkey ---
-            val secretKey = PGPSecretKey(
-                PGPSignature.DEFAULT_CERTIFICATION,
-                bcEdKeyPair,
-                "user@example.com",
-                digestCalculator,
-                null,
-                null,
-                signerBuilder,
-                encryptorBuilder
-            )
-            val subkey = PGPSecretKey(
-                bcEdKeyPair,
-                bcEcdhKeyPair,
-                digestCalculator,
-                signerBuilder,
-                encryptorBuilder
-            )
-
-            val secretKeyRing = PGPSecretKeyRing(listOf(secretKey, subkey))
-            val publicKeyRing = PGPPublicKeyRing(listOf(secretKey.publicKey, subkey.publicKey))
+            val (secretKeyRing, publicKeyRing) =
+                buildKeyRings(DEFAULT_USER_ID, secretKeyEncryptor(passphrase))
 
             saveNewSecretKeyRing(secretKeyRing, "$alias$SECRET_KEYRING_SUFFIX")
             saveKeyRing(publicKeyRing, "$alias.public_keyring.pgp")
