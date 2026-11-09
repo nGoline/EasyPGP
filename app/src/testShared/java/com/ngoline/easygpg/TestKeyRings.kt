@@ -1,11 +1,15 @@
 package com.ngoline.easygpg
 
+import java.math.BigInteger
 import java.util.Date
 import org.bouncycastle.bcpg.HashAlgorithmTags
 import org.bouncycastle.bcpg.PublicKeyAlgorithmTags
+import org.bouncycastle.bcpg.sig.KeyFlags
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
+import org.bouncycastle.crypto.generators.RSAKeyPairGenerator
 import org.bouncycastle.crypto.generators.X25519KeyPairGenerator
 import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters
+import org.bouncycastle.crypto.params.RSAKeyGenerationParameters
 import org.bouncycastle.crypto.params.X25519KeyGenerationParameters
 import org.bouncycastle.openpgp.PGPEncryptedData
 import org.bouncycastle.openpgp.PGPEncryptedDataList
@@ -17,6 +21,7 @@ import org.bouncycastle.openpgp.PGPPublicKeyRing
 import org.bouncycastle.openpgp.PGPSecretKey
 import org.bouncycastle.openpgp.PGPSecretKeyRing
 import org.bouncycastle.openpgp.PGPSignature
+import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator
 import org.bouncycastle.openpgp.PGPUtil
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator
 import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder
@@ -78,9 +83,73 @@ object TestKeyRings {
             PGPPublicKeyRing(listOf(primary.publicKey, subkey.publicKey))
     }
 
-    /** The subkey the app encrypts to — `EncryptFragment` picks by `isEncryptionKey`. */
+    /**
+     * A GnuPG-shaped RSA ring: a primary flagged certify-and-sign only plus an encryption subkey.
+     * Both keys are RSA, so `isEncryptionKey` answers true for *both* and only the key flags tell
+     * them apart. [subkeyValidSeconds] and [createdAt] exist so a test can age the subkey out.
+     */
+    fun generateRsa(
+        passphrase: CharArray,
+        userId: String = "rsa@example.com",
+        createdAt: Date = Date(),
+        subkeyValidSeconds: Long = 0,
+    ): Pair<PGPSecretKeyRing, PGPPublicKeyRing> {
+        val digestCalculator = BcPGPDigestCalculatorProvider().get(HashAlgorithmTags.SHA1)
+        val encryptorBuilder = BcPBESecretKeyEncryptorBuilder(
+            PGPEncryptedData.AES_256,
+            BcPGPDigestCalculatorProvider().get(HashAlgorithmTags.SHA1)
+        ).build(passphrase)
+        val signerBuilder =
+            BcPGPContentSignerBuilder(PublicKeyAlgorithmTags.RSA_GENERAL, HashAlgorithmTags.SHA256)
+
+        fun rsaPair(): BcPGPKeyPair {
+            val generator = RSAKeyPairGenerator()
+            generator.init(
+                RSAKeyGenerationParameters(
+                    BigInteger.valueOf(0x10001), java.security.SecureRandom(), 1024, 12
+                )
+            )
+            return BcPGPKeyPair(
+                BcPGPVersion, PublicKeyAlgorithmTags.RSA_GENERAL, generator.generateKeyPair(), createdAt
+            )
+        }
+
+        val primaryPair = rsaPair()
+        val subkeyPair = rsaPair()
+
+        val primaryFlags = PGPSignatureSubpacketGenerator().apply {
+            setKeyFlags(false, KeyFlags.CERTIFY_OTHER or KeyFlags.SIGN_DATA)
+        }.generate()
+        val subkeyFlags = PGPSignatureSubpacketGenerator().apply {
+            setKeyFlags(false, KeyFlags.ENCRYPT_COMMS or KeyFlags.ENCRYPT_STORAGE)
+            if (subkeyValidSeconds > 0) setKeyExpirationTime(false, subkeyValidSeconds)
+        }.generate()
+
+        val primary = PGPSecretKey(
+            PGPSignature.DEFAULT_CERTIFICATION,
+            primaryPair,
+            userId,
+            digestCalculator,
+            primaryFlags,
+            null,
+            signerBuilder,
+            encryptorBuilder
+        )
+        val subkey = PGPSecretKey(
+            primaryPair, subkeyPair, digestCalculator, subkeyFlags, null, signerBuilder, encryptorBuilder
+        )
+
+        return PGPSecretKeyRing(listOf(primary, subkey)) to
+            PGPPublicKeyRing(listOf(primary.publicKey, subkey.publicKey))
+    }
+
+    /**
+     * The encryption subkey, which is what the app encrypts to. Matched on `!isMasterKey` as well:
+     * `isEncryptionKey` reports what the algorithm can do, so on an RSA ring the primary answers
+     * true too and matching on it alone would hand back the wrong key.
+     */
     fun encryptionKey(publicKeyRing: PGPPublicKeyRing): PGPPublicKey =
-        publicKeyRing.publicKeys.asSequence().first { it.isEncryptionKey }
+        publicKeyRing.publicKeys.asSequence().first { !it.isMasterKey && it.isEncryptionKey }
 
     /** The Ed25519 primary key, which cannot encrypt. */
     fun signingKey(publicKeyRing: PGPPublicKeyRing): PGPPublicKey =
